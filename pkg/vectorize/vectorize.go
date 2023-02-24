@@ -9,6 +9,18 @@ const vectorEngineOpenAI = "openai"
 func DoInit(kind string) error {
 	switch kind {
 	case textKind:
+		db, err := connectToDB()
+		if err != nil {
+			return err
+		}
+		_, err = db.Exec(createExtensionPgVector)
+		if err != nil {
+			return err
+		}
+		_, err = db.Exec(createDataTableForTexts)
+		if err != nil {
+			return err
+		}
 		return nil
 	default:
 		return errors.New("unknown kind")
